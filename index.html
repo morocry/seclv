@@ -1,0 +1,450 @@
+<!-- 
+Palette: Vibrant Professional (Slate 900, Blue 600, Emerald 500, Amber 500).
+Plan Summary: 
+1. Header & Context: Establish the shift from 'time-served' to 'value-driven'.
+2. Competency Evolution (Radar Chart): Visualize how skill requirements shift from execution to strategy across levels.
+3. Level Profiles (Grid Cards): Detailed breakdown of H1-H6 roles, capabilities, and value contributions using Unicode icons.
+4. Value Composition (Stacked Bar Chart): Show the changing proportion of daily task types as rank increases.
+Chart Selections:
+- Radar Chart: Goal - Relationships/Profiles. Justification: Best for comparing multi-dimensional skill profiles (Execution, Emergency, etc.) across different career stages. Implemented via Chart.js Canvas (NO SVG).
+- Stacked Bar Chart: Goal - Compare/Composition. Justification: Ideal for showing how the percentage of time spent on different task categories (Execution vs Management) changes linearly from H1 to H6. Implemented via Chart.js Canvas (NO SVG).
+- Grid Cards: Goal - Organize. Justification: Clear, structured format for reading detailed role attributes. Implemented via HTML/Tailwind (NO SVG).
+Confirmation: NEITHER Mermaid JS NOR SVG were used anywhere in the output.
+-->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>安保团队职级能力画像与价值定义</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+.chart-container {
+    position: relative;
+    width: 100%;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    height: 45vh;
+    max-height: 450px;
+}
+@media (min-width: 768px) {
+    .chart-container { height: 400px; }
+}
+body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+</style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans tracking-tight">
+
+<nav class="bg-blue-900 text-white sticky top-0 z-50 shadow-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+            <div class="flex items-center gap-2">
+                <span class="text-2xl">🛡️</span>
+                <span class="font-bold text-lg tracking-wide">安保效能数据中心</span>
+            </div>
+            <div class="hidden md:block">
+                <div class="flex items-baseline space-x-4">
+                    <a href="#overview" class="hover:bg-blue-800 px-3 py-2 rounded-md text-sm font-medium transition-colors">体系概览</a>
+                    <a href="#evolution" class="hover:bg-blue-800 px-3 py-2 rounded-md text-sm font-medium transition-colors">能力演进</a>
+                    <a href="#profiles" class="hover:bg-blue-800 px-3 py-2 rounded-md text-sm font-medium transition-colors">职级画像</a>
+                    <a href="#composition" class="hover:bg-blue-800 px-3 py-2 rounded-md text-sm font-medium transition-colors">价值构成</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<header id="overview" class="bg-gradient-to-br from-blue-900 via-blue-800 to-slate-900 text-white py-20 px-4">
+    <div class="max-w-5xl mx-auto text-center">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-6 leading-tight">安保团队职级能力画像与<span class="text-amber-400">价值定义</span></h1>
+        <p class="text-lg md:text-xl text-blue-100 max-w-3xl mx-auto mb-10 leading-relaxed">
+            打破“熬工龄”的传统误区。随着公司业务的专业化发展，安保团队的角色已从传统的“看门人”转变为“公司运营秩序的守护者”与“商务形象的窗口”。晋升的唯一通行证是：你能处理什么量级的风险，你能创造什么维度的价值。
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto text-left">
+            <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                <div class="text-3xl mb-3">🧱</div>
+                <h3 class="text-xl font-bold mb-2 text-white">基础执行层 (H1-H2)</h3>
+                <p class="text-blue-100 text-sm">标准与秩序的基石。提供基础的安全视觉边界与敏锐的风险预警。</p>
+            </div>
+            <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                <div class="text-3xl mb-3">⚔️</div>
+                <h3 class="text-xl font-bold mb-2 text-white">核心骨干层 (H3-H4)</h3>
+                <p class="text-blue-100 text-sm">处置与技能的中坚。捍卫内部规则，化解复杂纠纷，输出专业技能。</p>
+            </div>
+            <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                <div class="text-3xl mb-3">🧠</div>
+                <h3 class="text-xl font-bold mb-2 text-white">管理领导层 (H5-H6)</h3>
+                <p class="text-blue-100 text-sm">统筹与战略的引领。调度现场资源，优化安防体系，实现管理无缝衔接。</p>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-20">
+
+    <section id="evolution" class="bg-white rounded-2xl shadow-sm border border-slate-200 p-8">
+        <div class="mb-8">
+            <h2 class="text-3xl font-bold text-slate-900 mb-4 border-l-4 border-blue-600 pl-4">能力维度的多极演进</h2>
+            <p class="text-slate-600 leading-relaxed max-w-4xl">
+                职级的提升不仅仅是经验的累积，更是核心能力维度的根本转移。从基础执行层到管理领导层，对“标准执行”的依赖逐渐降低，而对“体系规划”和“统筹调度”的要求呈指数级上升。下图展示了不同层级骨干在五大核心能力上的画像差异。
+            </p>
+        </div>
+        <div class="flex flex-col md:flex-row items-center gap-8">
+            <div class="w-full md:w-1/2 chart-container">
+                <canvas id="radarChart"></canvas>
+            </div>
+            <div class="w-full md:w-1/2 space-y-6">
+                <div class="flex items-start gap-4">
+                    <div class="w-4 h-4 mt-1 rounded-full bg-slate-400 shrink-0"></div>
+                    <div>
+                        <h4 class="font-bold text-slate-800">基础层 (H1-H2) 面向执行</h4>
+                        <p class="text-sm text-slate-600">能力极点集中在“标准化巡逻与执勤”。核心使命是确保SOP不折不扣地落地，充当敏锐的现场传感器。</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-4">
+                    <div class="w-4 h-4 mt-1 rounded-full bg-blue-500 shrink-0"></div>
+                    <div>
+                        <h4 class="font-bold text-slate-800">骨干层 (H3-H4) 面向现场</h4>
+                        <p class="text-sm text-slate-600">能力向“突发应急处置”与“风险敏锐洞察”扩张。要求能在高压环境下独立止损，并具备CBA/SCBA等重型装备实战能力。</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-4">
+                    <div class="w-4 h-4 mt-1 rounded-full bg-amber-500 shrink-0"></div>
+                    <div>
+                        <h4 class="font-bold text-slate-800">管理层 (H5-H6) 面向系统</h4>
+                        <p class="text-sm text-slate-600">能力核心转移至“现场资源统筹”与“安防体系规划”。摆脱单兵作战，通过技防优化与制度迭代创造杠杆价值。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="profiles">
+        <div class="mb-10 text-center">
+            <h2 class="text-3xl font-bold text-slate-900 mb-4">全职级能力与价值矩阵</h2>
+            <p class="text-slate-600 max-w-2xl mx-auto">
+                明确各职级“能处理什么事”和“创造什么价值”。让想进步的同事清晰地看到差距，让专业能力成为晋升的唯一准绳。
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden hover:shadow-lg transition-shadow">
+                <div class="bg-slate-100 p-4 border-b border-slate-200 flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <span class="text-2xl">🧍</span>
+                        <h3 class="font-bold text-lg text-slate-800">H1 见习维序员</h3>
+                    </div>
+                    <span class="text-xs font-semibold px-2 py-1 bg-slate-200 text-slate-700 rounded-full">基础层</span>
+                </div>
+                <div class="p-6">
+                    <p class="text-sm text-blue-600 font-semibold mb-4">定位：标准执行者 / 商务形象窗口</p>
+                    <div class="mb-4">
+                        <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">能处理的事</h4>
+                        <ul class="text-sm text-slate-700 space-y-1 list-disc pl-4">
+                            <li>专业商务接待与礼仪规范 (G1/G2/G3门岗)</li>
+                            <li>严格按照SOP完成巡逻、站岗与登记</li>
+                            <li>熟练操作对讲机、记录仪等常规装备</li>
+                        </ul>
+                    </div>
+                    <div class="bg-emerald-50 rounded-lg p-3 border border-emerald-100">
+                        <h4 class="text-xs font-bold text-emerald-800 uppercase tracking-wider mb-1">创造价值</h4>
+                        <p class="text-sm text-emerald-700">建立安全视觉边界；通过精细化指引提供初始商务安全感。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden hover:shadow-lg transition-shadow">
+                <div class="bg-slate-100 p-4 border-b border-slate-200 flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <span class="text-2xl">👁️</span>
+                        <h3 class="font-bold text-lg text-slate-800">H2 初级维序员</h3>
+                    </div>
+                    <span class="text-xs font-semibold px-2 py-1 bg-slate-200 text-slate-700 rounded-full">基础层</span>
+                </div>
+                <div class="p-6">
+                    <p class="text-sm text-blue-600 font-semibold mb-4">定位：敏锐观察者 / 预警哨兵</p>
+                    <div class="mb-4">
+                        <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">能处理的事</h4>
+                        <ul class="text-sm text-slate-700 space-y-1 list-disc pl-4">
+                            <li>园区公共区域全局扫描与可疑迹象识别</li>
+                            <li>熟练掌握盾牌、钢叉等防爆器材实战动作</li>
+                            <li>独立执勤，发现异常主动上报并完成闭环</li>
+                        </ul>
+                    </div>
+                    <div class="bg-emerald-50 rounded-lg p-3 border border-emerald-100">
+                        <h4 class="text-xs font-bold text-emerald-800 uppercase tracking-wider mb-1">创造价值</h4>
+                        <p class="text-sm text-emerald-700">作为现场第一发现人，缩短隐患存在时间，确保区域受控。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden hover:shadow-lg transition-shadow border-t-4 border-t-blue-500">
+                <div class="bg-blue-50 p-4 border-b border-blue-100 flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <span class="text-2xl">⚖️</span>
+                        <h3 class="font-bold text-lg text-slate-800">H3 中级维序员</h3>
+                    </div>
+                    <span class="text-xs font-semibold px-2 py-1 bg-blue-200 text-blue-800 rounded-full">核心层</span>
+                </div>
+                <div class="p-6">
+                    <p class="text-sm text-blue-600 font-semibold mb-4">定位：现场处置与稽核者</p>
+                    <div class="mb-4">
+                        <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">能处理的事</h4>
+                        <ul class="text-sm text-slate-700 space-y-1 list-disc pl-4">
+                            <li>员工/供应商违规行为(违停、吸烟等)取证导正</li>
+                            <li>独立处理求助与投诉，采用柔性化引导</li>
+                            <li>火灾初期按SOP使用灭火器/水带快速扑救</li>
+                        </ul>
+                    </div>
+                    <div class="bg-emerald-50 rounded-lg p-3 border border-emerald-100">
+                        <h4 class="text-xs font-bold text-emerald-800 uppercase tracking-wider mb-1">创造价值</h4>
+                        <p class="text-sm text-emerald-700">和谐治理；降低管理风险同时维护内部员工关系与企业氛围。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden hover:shadow-lg transition-shadow border-t-4 border-t-blue-500">
+                <div class="bg-blue-50 p-4 border-b border-blue-100 flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <span class="text-2xl">🚨</span>
+                        <h3 class="font-bold text-lg text-slate-800">H4 高级维序员</h3>
+                    </div>
+                    <span class="text-xs font-semibold px-2 py-1 bg-blue-200 text-blue-800 rounded-full">核心层</span>
+                </div>
+                <div class="p-6">
+                    <p class="text-sm text-blue-600 font-semibold mb-4">定位：技能带教者 / 应急中坚 (队长B角)</p>
+                    <div class="mb-4">
+                        <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">能处理的事</h4>
+                        <ul class="text-sm text-slate-700 space-y-1 list-disc pl-4">
+                            <li>新人导师：负责入职7天传帮带及考核评估</li>
+                            <li>精通重型防护装备(CBA/空呼SCBA)快速穿戴</li>
+                            <li>班组调度：队长不在场时分配任务，现场指挥</li>
+                        </ul>
+                    </div>
+                    <div class="bg-emerald-50 rounded-lg p-3 border border-emerald-100">
+                        <h4 class="text-xs font-bold text-emerald-800 uppercase tracking-wider mb-1">创造价值</h4>
+                        <p class="text-sm text-emerald-700">团队进化加速；提升班组平均战斗力，确保现场防线稳固可靠。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden hover:shadow-lg transition-shadow border-t-4 border-t-amber-500">
+                <div class="bg-amber-50 p-4 border-b border-amber-100 flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <span class="text-2xl">♟️</span>
+                        <h3 class="font-bold text-lg text-slate-800">H5 队长/小组负责人</h3>
+                    </div>
+                    <span class="text-xs font-semibold px-2 py-1 bg-amber-200 text-amber-800 rounded-full">管理层</span>
+                </div>
+                <div class="p-6">
+                    <p class="text-sm text-amber-600 font-semibold mb-4">定位：统筹管理者 / 资源调度官</p>
+                    <div class="mb-4">
+                        <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">能处理的事</h4>
+                        <ul class="text-sm text-slate-700 space-y-1 list-disc pl-4">
+                            <li>统筹大型接待安保整体布置、调度及预案制定</li>
+                            <li>结合实际风险制定班组训练计划并组织实操</li>
+                            <li>负责新人面试，识别并培养潜力骨干队员</li>
+                        </ul>
+                    </div>
+                    <div class="bg-emerald-50 rounded-lg p-3 border border-emerald-100">
+                        <h4 class="text-xs font-bold text-emerald-800 uppercase tracking-wider mb-1">创造价值</h4>
+                        <p class="text-sm text-emerald-700">系统化防御；通过高效资源配置确保安防体系在极端压力下顺畅运转。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden hover:shadow-lg transition-shadow border-t-4 border-t-amber-500">
+                <div class="bg-amber-50 p-4 border-b border-amber-100 flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <span class="text-2xl">🧠</span>
+                        <h3 class="font-bold text-lg text-slate-800">H6 高级队长/项目主管</h3>
+                    </div>
+                    <span class="text-xs font-semibold px-2 py-1 bg-amber-200 text-amber-800 rounded-full">管理层</span>
+                </div>
+                <div class="p-6">
+                    <p class="text-sm text-amber-600 font-semibold mb-4">定位：战略执行者 / 体系优化师 (主管B角)</p>
+                    <div class="mb-4">
+                        <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">能处理的事</h4>
+                        <ul class="text-sm text-slate-700 space-y-1 list-disc pl-4">
+                            <li>编写与迭代说明书、标准化SOP及管理制度</li>
+                            <li>参与安防规划，提出技术优化手段(监控/系统联动)</li>
+                            <li>代行主管职责，独立决策并参加公司级会议</li>
+                        </ul>
+                    </div>
+                    <div class="bg-emerald-50 rounded-lg p-3 border border-emerald-100">
+                        <h4 class="text-xs font-bold text-emerald-800 uppercase tracking-wider mb-1">创造价值</h4>
+                        <p class="text-sm text-emerald-700">管理无缝衔接；保障管理前瞻性，以专业方案支撑公司业务发展。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="composition" class="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 mb-12">
+        <div class="mb-8">
+            <h2 class="text-3xl font-bold text-slate-900 mb-4 border-l-4 border-amber-500 pl-4">职能时间与价值构成转化</h2>
+            <p class="text-slate-600 leading-relaxed max-w-4xl">
+                高职级不意味着脱离一线，而是意味着处理问题类型的转化。随着职级从 H1 攀升至 H6，核心精力必须从“基础标准化执行”向“突发应急处置”、“团队管理赋能”以及“前瞻性系统规划”逐步转移。这是区分“资历”与“能力”的核心指标。
+            </p>
+        </div>
+        <div class="w-full chart-container">
+            <canvas id="stackedBarChart"></canvas>
+        </div>
+    </section>
+
+</main>
+
+<footer class="bg-slate-900 text-slate-400 py-8 text-center text-sm">
+    <div class="max-w-4xl mx-auto px-4">
+        <p class="mb-2">⚠️ 动态调整声明：根据公司业务变化，本画像将遵循“每季度微调、每半年大调”原则。</p>
+        <p>自我对标：在即将来临的晋升月中，请基于此定性画像预申报。后续将配套细化的量化 KPI 考核指标（如稽核合格率、穿戴考核时间等）。</p>
+    </div>
+</footer>
+
+<script>
+const wrapText = (text, maxLength) => {
+    if (text.length <= maxLength) return text;
+    const words = text.split('');
+    let lines = [];
+    let currentLine = '';
+    for (let i = 0; i < words.length; i++) {
+        if (currentLine.length >= maxLength) {
+            lines.push(currentLine);
+            currentLine = words[i];
+        } else {
+            currentLine += words[i];
+        }
+    }
+    if (currentLine) lines.push(currentLine);
+    return lines;
+};
+
+const tooltipConfig = {
+    tooltip: {
+        backgroundColor: 'rgba(15, 23, 42, 0.9)',
+        titleFont: { size: 14, family: 'sans-serif' },
+        bodyFont: { size: 13, family: 'sans-serif' },
+        padding: 12,
+        cornerRadius: 8,
+        callbacks: {
+            title: function(tooltipItems) {
+                const item = tooltipItems[0];
+                let label = item.chart.data.labels[item.dataIndex];
+                if (Array.isArray(label)) {
+                    return label.join('');
+                } else {
+                    return label;
+                }
+            }
+        }
+    }
+};
+
+const radarCtx = document.getElementById('radarChart').getContext('2d');
+new Chart(radarCtx, {
+    type: 'radar',
+    data: {
+        labels: [
+            wrapText('标准化巡逻与执勤', 8),
+            wrapText('突发事件应急处置', 8),
+            wrapText('现场资源统筹调度', 8),
+            wrapText('潜在风险敏锐洞察', 8),
+            wrapText('安防体系前瞻规划', 8)
+        ],
+        datasets: [
+            {
+                label: '基础层 (H1-H2)',
+                data: [95, 30, 10, 40, 5],
+                backgroundColor: 'rgba(148, 163, 184, 0.2)',
+                borderColor: 'rgba(148, 163, 184, 1)',
+                pointBackgroundColor: 'rgba(148, 163, 184, 1)',
+                borderWidth: 2
+            },
+            {
+                label: '核心层 (H3-H4)',
+                data: [50, 85, 40, 75, 20],
+                backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                borderColor: 'rgba(59, 130, 246, 1)',
+                pointBackgroundColor: 'rgba(59, 130, 246, 1)',
+                borderWidth: 2
+            },
+            {
+                label: '管理层 (H5-H6)',
+                data: [20, 60, 90, 80, 95],
+                backgroundColor: 'rgba(245, 158, 11, 0.2)',
+                borderColor: 'rgba(245, 158, 11, 1)',
+                pointBackgroundColor: 'rgba(245, 158, 11, 1)',
+                borderWidth: 2
+            }
+        ]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: { position: 'bottom' },
+            ...tooltipConfig
+        },
+        scales: {
+            r: {
+                angleLines: { color: 'rgba(0, 0, 0, 0.1)' },
+                grid: { color: 'rgba(0, 0, 0, 0.1)' },
+                pointLabels: {
+                    font: { size: 12, family: 'sans-serif', weight: 'bold' },
+                    color: '#1e293b'
+                },
+                ticks: { display: false, min: 0, max: 100 }
+            }
+        }
+    }
+});
+
+const barCtx = document.getElementById('stackedBarChart').getContext('2d');
+new Chart(barCtx, {
+    type: 'bar',
+    data: {
+        labels: ['H1 见习维序', 'H2 初级维序', 'H3 中级维序', 'H4 高级维序', 'H5 队长/主管', 'H6 高级队长'],
+        datasets: [
+            {
+                label: '基础标准化执行',
+                data: [90, 75, 40, 20, 10, 5],
+                backgroundColor: '#94a3b8'
+            },
+            {
+                label: '突发事件与现场处置',
+                data: [10, 25, 45, 40, 20, 10],
+                backgroundColor: '#3b82f6'
+            },
+            {
+                label: '团队带教与资源统筹',
+                data: [0, 0, 15, 30, 50, 35],
+                backgroundColor: '#10b981'
+            },
+            {
+                label: '制度建设与体系优化',
+                data: [0, 0, 0, 10, 20, 50],
+                backgroundColor: '#f59e0b'
+            }
+        ]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: { position: 'top' },
+            ...tooltipConfig
+        },
+        scales: {
+            x: { stacked: true, grid: { display: false } },
+            y: { stacked: true, max: 100, title: { display: true, text: '精力占比 (%)' } }
+        }
+    }
+});
+</script>
+</body>
+</html>
